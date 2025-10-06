@@ -18,7 +18,7 @@ ejscreen <- sf::st_read(here::here("data", "ejscreen", "EJSCREEN_2023_BG_StatePc
 ```
 
 ```{r}
-# filter to include the State and County of focus (Santa Ana)
+# filter to only include the State and County of focus (Santa Ana)
 
 Orange_County <- ejscreen %>%
   dplyr::filter(ST_ABBREV == "CA", CNTY_NAME %in% c("Orange County"))
@@ -26,23 +26,10 @@ Orange_County$LOWINCPCT <-Orange_County$LOWINCPCT * 100
 ```
 
 ```{r}
-# Map Orange County
-tm_shape(Orange_County) +
-  tm_polygons(col.scale = "PRMP",
-              palette = c("yellow", "red", "darkred"),
-              tm_legend("Particulate Matter"),
-              breaks=c(0.00, 0.25, 0.5, 0.75, 1.0, 2.00, 3.00, 4.00, 5.00)) +
-  tm_compass(position = c("left", "top")) +
-  tm_scalebar() +
-  tm_layout(main.title = "Particulate Matter in Orange County CA")
+ 
 
-```
-
-```{r}
-
-
-tm_shape(Orange_County) +
-tm_polygons(fill = "RSEI_AIR", 
+#tm_shape(Orange_County) +
+#tm_polygons(fill = "RSEI_AIR", 
             breaks=c(0.00, 199.00, 399.00, 599.00, 799.0, 999.00, 1199.00, 2000.00, 3000.00, 5000.00, 10000.00, 15000.00), 
             fill.scale = tm_scale(values = c("yellow", "darkred"))) + 
   tm_compass(position = c("left", "top"))+ 
@@ -52,34 +39,46 @@ tm_polygons(fill = "RSEI_AIR",
 ```
 
 ```{r}
-# Map showing particulate matter/low air quality is generally concentrated in the North sector of the County
+# Map poor air quality, RSEI_AIR, within Orange County, with a color gradient system focused on different particulate levels.
 
 tm_shape(Orange_County) +
-tm_polygons(fill = "RSEI_AIR",
-            border.col = "black",
-            fill.scale = tm_scale(values = c("yellow", "darkred")),
-            fill.legend = tm_legend(title = "Particulate Matter (PPM)"),
-            breaks= c(0.00, 199.00, 399.00, 599.00, 799.0, 999.00, 1199.00, 2000.00, 3000.00, 5000.00, 10000.00, 15000.00)) + 
+  tm_graticules() +
+  tm_polygons(fill = "RSEI_AIR",
+              border.col = "black",
+              title = "Air Pollution Index",
+              breaks= c(0.00, 199.00, 399.00, 599.00, 799.0, 999.00, 1199.00, 2000.00, 3000.00, 5000.00, 10000.00, 15000.00)) + 
   tm_compass(position = c("left", "top"))+ 
   tm_scalebar(position = c("left", "bottom")) + 
-  #tm_gradicule
-  tm_layout(main.title = "Relative Potential Human Health Impacts")
+  tm_layout(main.title = "Map of Areas With High Air Pollution")
 ```
 
 ```{r}
-# besure to include gradules
-# col, palette, title, and style
-# fill. legend to change text
+# Map the percentage of low income designated households by zipcode to determine if there is a spatial correlation between income levels and hazardous air levels. 
 tm_shape(Orange_County) +
+  tm_graticules() +
 tm_polygons(fill = "LOWINCPCT", 
-            breaks= c(0, 20, 40, 60, 80, 100)) + 
+            border.col = "black",
+            breaks= c(0, 20, 40, 60, 80, 100),
+            title = "% of HH Low Income") + 
   tm_compass(position = c("left", "top"))+ 
   tm_scalebar(position = c("left", "bottom")) + 
-  tm_layout(main.title = "Relative Potential Human Health Impacts")
+  tm_layout(main.title = "Map of Low Income Households")
 ```
 
 These two maps were created to show, if true, a spatial correlation between quantity of potentially harmful particulate matter, and percentage of homes deemed low income. What these maps show is that there is a higher quantity of detected particulates, on average, within the communities found within the north and north-west sections of Orange County. This coincides with a general trend where many of those same areas also have higher levels of residents residing within low income households.
 
 ```{r}
 #tm_fill (pallete, title)
+```
+
+```{r}
+tm_shape(Orange_County) +
+tm_fill("LOWINCPCT",
+        palette = "Blues",
+        title = "blah") +
+    #breaks= c(0, 20, 40, 60, 80, 100),
+    #title = "% of HH Low Income") + 
+  tm_compass(position = c("left", "top"))+ 
+  tm_scalebar(position = c("left", "bottom")) + 
+  tm_layout(main.title = "Relative Potential Human Health Impacts")
 ```
