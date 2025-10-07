@@ -1,6 +1,10 @@
 ---
-title: "Untitled"
-format: html
+title: "Homework 1 Maps"
+pdf: 
+  documentclass: article
+  fontsize: 12pt
+  geometry: 
+    -margin=1in
 editor: visual
 ---
 

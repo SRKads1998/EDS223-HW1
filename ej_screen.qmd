@@ -1,26 +1,61 @@
 ---
-title: "Untitled"
+title: "Orange County Air Pollution and Household Income"
 format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
 ```{r}
-1 + 1
+#| message: false
+library(tidyverse)
+library(sf)
+library(here)
+library(tmap)
+
 ```
 
-You can add options to executable code like this
-
 ```{r}
-#| echo: false
-2 * 2
+#| message: false
+#| warning: false
+# read in the the geodatabase 
+ejscreen <- sf::st_read(here::here("data", "ejscreen", "EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"))
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+#| message: false
+#| warning: false
+# filter to only include the State and County of focus (Santa Ana) and multiple decimal point variable by 100 to see percentage point values
+
+Orange_County <- ejscreen %>%
+  dplyr::filter(ST_ABBREV == "CA", CNTY_NAME %in% c("Orange County"))
+Orange_County$LOWINCPCT <-Orange_County$LOWINCPCT * 100
+```
+
+```{r}
+#| message: false
+#| warning: false
+# Map poor air quality, RSEI_AIR, within Orange County, with a color gradient system focused on different particulate levels.
+
+tm_shape(Orange_County) +
+  tm_polygons(fill = "RSEI_AIR",
+              border.col = "black",
+              palette = "Reds",
+              title = "Air Pollution Index",
+              breaks= c(0.00, 199.00, 399.00, 599.00, 799.0, 999.00, 1199.00, 2000.00, 3000.00, 5000.00, 10000.00, 15000.00)) + 
+  tm_compass(position = c("left", "top"))+ 
+  tm_scalebar(position = c("left", "bottom")) + 
+  tm_layout(main.title = "Map of Areas With High Air Pollution")
+```
+
+```{r}
+#| message: false
+#| warning: false
+# Map the percentage of low income designated households by zipcode to determine if there is a spatial correlation between income levels and hazardous air levels. 
+tm_shape(Orange_County) +
+tm_polygons(fill = "LOWINCPCT", 
+            border.col = "black",
+            breaks= c(0, 20, 40, 60, 80, 100),
+            title = "% of HH Low Income") + 
+  tm_compass(position = c("left", "top"))+ 
+  tm_scalebar(position = c("left", "bottom")) + 
+  tm_layout(main.title = "Map of Low Income Households")
+```
