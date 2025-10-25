@@ -23,7 +23,3 @@ Note: The government run EJ_Screen website <https://www.epa.gov/ejscreen> is no 
 The data used for this analysis was sourced from the following public Google Drive, and is derived from the EJ_Screen data links included above:
 
 <https://drive.google.com/file/d/1nG6Nj1bXfzQFOVMO8Km3eNy4SWu1YcIQ/view>
-
-## References and License
-
-All data was collected from the following website:
