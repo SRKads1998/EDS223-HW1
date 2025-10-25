@@ -16,6 +16,14 @@ This repository contains the relevant files and data used to create a quarto doc
 
 Stephan Kadonoff
 
+## Data Access
+
+Note: The government run EJ_Screen website <https://www.epa.gov/ejscreen> is no longer accessible. However, an unofficial reproduction of the tool may be found at the following link <https://pedp-ejscreen.azurewebsites.net/>
+
+The data used for this analysis was sourced from the following public Google Drive, and is derived from the EJ_Screen data links included above:
+
+<https://drive.google.com/file/d/1nG6Nj1bXfzQFOVMO8Km3eNy4SWu1YcIQ/view>
+
 ## References and License
 
-All data was collected from the following website: <https://pedp-ejscreen.azurewebsites.net/>
+All data was collected from the following website:
