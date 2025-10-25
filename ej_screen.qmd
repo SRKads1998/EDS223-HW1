@@ -1,8 +1,22 @@
 ---
 title: "Orange County Air Pollution and Household Income"
+Author: Stephan Kadonoff
+Date: 10/24/2025
 format: html
 editor: visual
+message: false
+warning: false
 ---
+
+## Mapping Environmental Hazards in Orange County
+
+## Environmental Justice: Correlation of poverty and exposure to air pollution.
+
+Environmental challenges are not just limited to public land degradation or pollutant impacts on local species. Often times, the human element is overlooked when discussing negative externalities of air pollution. Within this quarto doc, we seek to analyze and better understand how air pollution impacts the millions of residents who call Orange County home. Beyond simply mapping areas of high air pollution, we also will look at which areas within that same geographic area have high levels of low household income
+
+### 1. Preliminary Data Loading
+
+To begin with, we will want to load relevant libraries, as well as read in the ej_screen geodatabase file into our environment.
 
 ```{r}
 #| message: false
@@ -20,15 +34,23 @@ library(tmap)
 ejscreen <- sf::st_read(here::here("data", "ejscreen", "EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"))
 ```
 
+### 2. Filtering data for our region of focus
+
+After the initial steps of loading in the data, we will want to start parsing out only the sections which are relevant for our analysis.
+
 ```{r}
 #| message: false
 #| warning: false
 # filter to only include the State and County of focus (Santa Ana) and multiple decimal point variable by 100 to see percentage point values
 
 Orange_County <- ejscreen %>%
-  dplyr::filter(ST_ABBREV == "CA", CNTY_NAME %in% c("Orange County"))
+  filter(ST_ABBREV == "CA", CNTY_NAME %in% c("Orange County"))
 Orange_County$LOWINCPCT <-Orange_County$LOWINCPCT * 100
 ```
+
+### Creating the Maps
+
+With our data now properly filtered, we can create our two maps. The first is a map showing areas with high levels of air pollution across Orange County, CA and the second map looks at zipcodes with low household income.
 
 ```{r}
 #| message: false
@@ -43,7 +65,7 @@ tm_shape(Orange_County) +
               breaks= c(0.00, 199.00, 399.00, 599.00, 799.0, 999.00, 1199.00, 2000.00, 3000.00, 5000.00, 10000.00, 15000.00)) + 
   tm_compass(position = c("left", "top"))+ 
   tm_scalebar(position = c("left", "bottom")) + 
-  tm_layout(main.title = "Map of Areas With High Air Pollution")
+  tm_layout(main.title = "Areas in Orange County CA With High Air Pollution")
 ```
 
 ```{r}
@@ -57,5 +79,5 @@ tm_polygons(fill = "LOWINCPCT",
             title = "% of HH Low Income") + 
   tm_compass(position = c("left", "top"))+ 
   tm_scalebar(position = c("left", "bottom")) + 
-  tm_layout(main.title = "Map of Low Income Households")
+  tm_layout(main.title = "Map of Low Income Households in Orange County CA")
 ```
