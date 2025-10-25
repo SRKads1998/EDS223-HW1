@@ -99,8 +99,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="mapping" class="level2">
-<h2 class="anchored" data-anchor-id="mapping">Mapping</h2>
+<section id="mapping-environmental-hazards-in-orange-county" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-environmental-hazards-in-orange-county">Mapping Environmental Hazards in Orange County</h2>
+</section>
+<section id="environmental-justice-correlation-of-poverty-and-exposure-to-air-pollution." class="level2">
+<h2 class="anchored" data-anchor-id="environmental-justice-correlation-of-poverty-and-exposure-to-air-pollution.">Environmental Justice: Correlation of poverty and exposure to air pollution.</h2>
+<p>Environmental challenges are not just limited to public land degradation or pollutant impacts on local species. Often times, the human element is overlooked when discussing negative externalities of air pollution. Within this quarto doc, we seek to analyze and better understand how air pollution impacts the millions of residents who call Orange County home. Beyond simply mapping areas of high air pollution, we also will look at which areas within that same geographic area have high levels of low household income</p>
+<section id="preliminary-data-loading" class="level3">
+<h3 class="anchored" data-anchor-id="preliminary-data-loading">1. Preliminary Data Loading</h3>
+<p>To begin with, we will want to load relevant libraries, as well as read in the ej_screen geodatabase file into our environment.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
@@ -121,13 +128,21 @@ Bounding box:  xmin: -19951910 ymin: -1617130 xmax: 16259830 ymax: 11554350
 Projected CRS: WGS 84 / Pseudo-Mercator</code></pre>
 </div>
 </div>
+</section>
+<section id="filtering-data-for-our-region-of-focus" class="level3">
+<h3 class="anchored" data-anchor-id="filtering-data-for-our-region-of-focus">2. Filtering data for our region of focus</h3>
+<p>After the initial steps of loading in the data, we will want to start parsing out only the sections which are relevant for our analysis.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter to only include the State and County of focus (Santa Ana) and multiple decimal point variable by 100 to see percentage point values</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Orange_County <span class="ot">&lt;-</span> ejscreen <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(ST_ABBREV <span class="sc">==</span> <span class="st">"CA"</span>, CNTY_NAME <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Orange County"</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ST_ABBREV <span class="sc">==</span> <span class="st">"CA"</span>, CNTY_NAME <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Orange County"</span>))</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Orange_County<span class="sc">$</span>LOWINCPCT <span class="ot">&lt;-</span>Orange_County<span class="sc">$</span>LOWINCPCT <span class="sc">*</span> <span class="dv">100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
+<section id="creating-the-maps" class="level3">
+<h3 class="anchored" data-anchor-id="creating-the-maps">Creating the Maps</h3>
+<p>With our data now properly filtered, we can create our two maps. The first is a map showing areas with high levels of air pollution across Orange County, CA and the second map looks at zipcodes with low household income.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map poor air quality, RSEI_AIR, within Orange County, with a color gradient system focused on different particulate levels.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -166,6 +181,7 @@ Projected CRS: WGS 84 / Pseudo-Mercator</code></pre>
 </div>
 </div>
 </div>
+</section>
 </section>
 
 </main>

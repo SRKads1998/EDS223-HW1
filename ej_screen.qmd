@@ -8,6 +8,8 @@ message: false
 warning: false
 ---
 
+#### Author: Stephan Kadonoff                                                         Date:10/24/2025
+
 ## Mapping Environmental Hazards in Orange County
 
 ## Environmental Justice: Correlation of poverty and exposure to air pollution.
